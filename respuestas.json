@@ -1,0 +1,7 @@
+{
+  "menu": "🌿 Bienvenido a Growroom\n¿En qué puedo ayudarte?\n1️⃣ Ver productos\n2️⃣ Tips de cultivo\n3️⃣ Promos\n4️⃣ Hablar con ArturoBot IA",
+  "1": "📦 Catálogo:\n- Semillas: https://growroom.com.ar/semillas\n- Fertilizantes: https://growroom.com.ar/fertilizantes\n- Kits: https://growroom.com.ar/kits\n\nEscribí el número del producto que querés ver con más info.",
+  "2": "📘 Tips de cultivo:\nEscribí la etapa en la que estás:\n- germinación\n- vegetativo\n- floración\n- cosecha",
+  "3": "🔥 Promos de hoy:\n- 3x2 en fertilizantes\n- Kit de indoor + semillas gratis\n- Envíos gratis al comprar kit completo",
+  "volver": "⬅️ Volver al menú\n"  
+}

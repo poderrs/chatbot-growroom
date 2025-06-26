@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Chatbot Growroom</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      background: #f4f4f4;
+      padding: 40px;
+      color: #333;
+    }
+    h2 {
+      font-size: 24px;
+      margin-bottom: 10px;
+    }
+    #respuesta {
+      margin-top: 20px;
+      padding: 15px;
+      background: #fff;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      white-space: pre-wrap;
+    }
+    .boton {
+      padding: 10px 20px;
+      margin: 5px;
+      border: none;
+      border-radius: 5px;
+      background-color: #2e7d32;
+      color: white;
+      cursor: pointer;
+      font-size: 16px;
+    }
+    input {
+      padding: 8px;
+      width: 300px;
+      margin-top: 15px;
+    }
+  </style>
+</head>
+<body>
+  <h2>🌱 Chatbot Growroom</h2>
+
+  <div id="menu-botones">
+    <p>¿En qué te puedo ayudar?</p>
+    <button class="boton" onclick="enviarMensaje('1')">1️⃣ Ver productos</button>
+    <button class="boton" onclick="enviarMensaje('2')">2️⃣ Tips de cultivo</button>
+    <button class="boton" onclick="enviarMensaje('3')">3️⃣ Promos</button>
+    <button class="boton" oncl
