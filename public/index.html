@@ -4,47 +4,123 @@
   <meta charset="UTF-8">
   <title>Chatbot Growroom</title>
   <style>
-    body {
-      font-family: sans-serif;
-      background: #f4f4f4;
-      padding: 40px;
-      color: #333;
+    body { margin:0; padding:0; background:#101010; font-family: 'Segoe UI', sans-serif; }
+    #chatbot-growroom { position: fixed; bottom:20px; right:20px; width:340px; z-index:9999; }
+    #chat-window {
+      background:#1A1A1A; border-radius:15px; padding:16px; height:460px;
+      overflow-y:auto; display:none; box-shadow:0 8px 20px rgba(0,0,0,0.7);
+      color:#EEE;
     }
-    h2 {
-      font-size: 24px;
-      margin-bottom: 10px;
+    #chat-window h3 {
+      margin:0 0 10px; font-size:18px; display:flex; align-items:center;
     }
-    #respuesta {
-      margin-top: 20px;
-      padding: 15px;
-      background: #fff;
-      border: 1px solid #ddd;
-      border-radius: 5px;
-      white-space: pre-wrap;
+    #chat-window h3 img {
+      height:32px; margin-right:8px;
     }
-    .boton {
-      padding: 10px 20px;
-      margin: 5px;
-      border: none;
-      border-radius: 5px;
-      background-color: #2e7d32;
-      color: white;
-      cursor: pointer;
-      font-size: 16px;
+    #chat-content p { margin:10px 0; line-height:1.4; }
+    #typing { display:none; font-style:italic; color:#AAA; margin-top:8px; }
+    .btn {
+      padding:10px 20px; margin:5px; border:none; border-radius:8px;
+      background:#FFD600; color:#101010; cursor:pointer; font-size:15px;
     }
-    input {
-      padding: 8px;
-      width: 300px;
-      margin-top: 15px;
+    #chat-toggle {
+      width:100%; padding:14px 0; background:#FFD600; border:none;
+      border-radius:50px; font-size:16px; color:#101010; cursor:pointer;
+      box-shadow:0 4px 12px rgba(0,0,0,0.5);
+    }
+    #whatsapp-btn {
+      display:block; text-align:center; margin-top:16px;
+      background:#25D366; color:#fff; padding:12px; border-radius:8px;
+      text-decoration:none; font-size:15px;
     }
   </style>
 </head>
 <body>
-  <h2>🌱 Chatbot Growroom</h2>
+  <div id="chatbot-growroom">
+    <div id="chat-window">
+      <h3><img src="https://www.growroom.com.ar/img/logo.png" alt="Growroom">Artu Grower 🌱</h3>
+      <div id="chat-content"></div>
+      <div id="typing">Arturito está escribiendo...</div>
+      <a id="whatsapp-btn" href="https://wa.me/5493417437382?text=Hola%20Artu%20Grower%2C%20vi%20el%20chat%20en%20la%20web%20y%20quiero%20hacer%20una%20consulta" target="_blank">
+  💬 Escribinos por WhatsApp
+      </a>
+    </div>
+    <button id="chat-toggle">💬 Chat Growroom</button>
+  </div>
 
-  <div id="menu-botones">
-    <p>¿En qué te puedo ayudar?</p>
-    <button class="boton" onclick="enviarMensaje('1')">1️⃣ Ver productos</button>
-    <button class="boton" onclick="enviarMensaje('2')">2️⃣ Tips de cultivo</button>
-    <button class="boton" onclick="enviarMensaje('3')">3️⃣ Promos</button>
-    <button class="boton" oncl
+  <script>
+    const toggleBtn = document.getElementById('chat-toggle');
+    const chatWindow = document.getElementById('chat-window');
+    const chatContent = document.getElementById('chat-content');
+    const typing = document.getElementById('typing');
+
+    const mensajes = [
+      "🌿 Bienvenido a Growroom",
+      "¿En qué puedo ayudarte?",
+      "1️⃣ Productos\n2️⃣ Tips\n3️⃣ Promos\n4️⃣ IA"
+    ];
+
+    toggleBtn.addEventListener('click', () => {
+      const abierto = chatWindow.style.display === 'block';
+      chatWindow.style.display = abierto ? 'none' : 'block';
+      if (!abierto) mostrarMensajes();
+    });
+
+    function mostrarMensajes() {
+      chatContent.innerHTML = '';
+      typing.style.display = 'block';
+      let i = 0;
+      function escribir() {
+        if (i < mensajes.length) {
+          const p = document.createElement('p');
+          p.textContent = mensajes[i];
+          chatContent.appendChild(p);
+          i++;
+          setTimeout(escribir, 500);
+        } else {
+          typing.style.display = 'none';
+          mostrarBotones();
+        }
+      }
+      escribir();
+    }
+
+    function mostrarBotones() {
+      const btns = [
+        ['1', 'Productos'],
+        ['2', 'Tips'],
+        ['3', 'Promos'],
+        ['4', 'IA']
+      ];
+      btns.forEach(([val,label]) => {
+        const btn = document.createElement('button');
+        btn.textContent = `${val} ${label}`;
+        btn.className = 'btn';
+        btn.onclick = () => enviarMensaje(val);
+        chatContent.appendChild(btn);
+      });
+    }
+
+    async function enviarMensaje(msg) {
+      chatContent.innerHTML = '';
+      typing.style.display = 'block';
+      try {
+        const res = await fetch('/api/chat', {
+          method:'POST',
+          headers:{'Content-Type':'application/json'},
+          body:JSON.stringify({mensaje:msg})
+        });
+        const data = await res.json();
+        typing.style.display = 'none';
+        chatContent.innerHTML = `<p>${data.respuesta}</p>`;
+        chatContent.scrollTop = chatContent.scrollHeight;
+        // luego mostrar menú otra vez
+        setTimeout(mostrarBotones, 1000);
+      } catch {
+        typing.style.display = 'none';
+        chatContent.innerHTML = '<p>❌ Error al conectar. Intentá de nuevo.</p>';
+      }
+    }
+  </script>
+</body>
+</html>
